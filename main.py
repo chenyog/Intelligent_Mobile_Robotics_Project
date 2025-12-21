@@ -1,8 +1,20 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
 from flight_environment import FlightEnvironment
+from path_planner import plan_path_a_star
+from trajectory_generator import generate_minco_trajectory
 
 env = FlightEnvironment(50)
-start = (1,2,0)
-goal = (18,18,3)
+
+# Tunable parameters
+START = (1, 2, 0)
+GOAL = (18, 18, 3)
+ASTAR_RESOLUTION = 0.5
+ASTAR_MAX_ITER = 200000
+MAX_SPEED = 2.0
+DT = 0.01
+MAX_SEGMENT_LENGTH = 1.5
 
 # --------------------------------------------------------------------------------------------------- #
 # Call your path planning algorithm here. 
@@ -13,14 +25,18 @@ goal = (18,18,3)
 #   - column 3 contains the z-coordinates of all path points
 # This `path` array will be provided to the `env` object for visualization.
 
-path = [[0,0,0],[1,1,1],[2,2,2],[3,3,3]]
+path = plan_path_a_star(
+    env,
+    START,
+    GOAL,
+    resolution=ASTAR_RESOLUTION,
+    max_iterations=ASTAR_MAX_ITER,
+)
 
 # --------------------------------------------------------------------------------------------------- #
 
 
-env.plot_cylinders(path)
-
-
+env.plot_cylinders(path, show=False)
 # --------------------------------------------------------------------------------------------------- #
 #   Call your trajectory planning algorithm here. The algorithm should
 #   generate a smooth trajectory that passes through all the previously
@@ -34,8 +50,17 @@ env.plot_cylinders(path)
 #   points on the same figure to clearly show how the continuous trajectory
 #   follows these path points.
 
+generate_minco_trajectory(
+    np.asarray(path),
+    max_speed=MAX_SPEED,
+    dt=DT,
+    max_segment_length=MAX_SEGMENT_LENGTH,
+    env=env,
+    is_plotting=True,
+    show=False,
+)
 
-
+plt.show()
 
 # --------------------------------------------------------------------------------------------------- #
 

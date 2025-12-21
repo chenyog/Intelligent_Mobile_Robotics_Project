@@ -109,7 +109,7 @@ class FlightEnvironment:
             
             return False
     
-    def plot_cylinders(self,path = None):
+    def plot_cylinders(self, path=None, show=True):
         """
         cylinders: N×4 array, [cx, cy, h, r]
         """
@@ -150,7 +150,9 @@ class FlightEnvironment:
             ax.scatter(xs[0], ys[0], zs[0], s=40) 
             ax.scatter(xs[-1], ys[-1], zs[-1], s=40) 
         self.set_axes_equal(ax)
-        plt.show()
+        if show:
+            plt.show()
+        return fig, ax
 
 
     def set_axes_equal(self,ax):
@@ -174,4 +176,3 @@ class FlightEnvironment:
         ax.set_xlim3d([mid_x - max_range, mid_x + max_range])
         ax.set_ylim3d([mid_y - max_range, mid_y + max_range])
         ax.set_zlim3d([mid_z - max_range, mid_z + max_range])
-
