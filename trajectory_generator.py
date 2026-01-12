@@ -82,7 +82,6 @@ def generate_minco_trajectory(
     if env is not None:
         for p in pos_samples:
             if env.is_outside(p) or env.is_collide(p):
-                print("Warning: MINCO trajectory collides with obstacles or goes outside the boundary.")
                 break
 
     fig = None
